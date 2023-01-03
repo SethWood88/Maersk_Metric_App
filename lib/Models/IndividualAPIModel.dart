@@ -1,14 +1,16 @@
-class IndividualAPIModel {
-  String? checkname;
-  int? freshpingid;
-  String? totalUptime;
-  int? totalEntries;
-  String? overallTimespan;
+class AllAPIModel {
+  int? chkRespId;
+  int? id;
+  String? name;
+  String? status;
+  String? alertNote;
+  String? location;
   int? monitoringInterval;
-  String? totalDowntime;
-  double? totalUptimePercent;
-  double? totalDowntimePercent;
-  int? averageOutageDuration;
+  int? requestTimeout;
+  String? basicAuthUsername;
+  String? basicAuthPassword;
+  String? createdatetime;
+  int? sequence;
   String? clientName;
   int? dBStatus;
   int? objStatus;
@@ -16,35 +18,21 @@ class IndividualAPIModel {
   String? errorMessage;
   int? executionMS;
 
-  IndividualAPIModel(
-      {this.checkname,
-        this.freshpingid,
-        this.totalUptime,
-        this.totalEntries,
-        this.overallTimespan,
-        this.monitoringInterval,
-        this.totalDowntime,
-        this.totalUptimePercent,
-        this.totalDowntimePercent,
-        this.averageOutageDuration,
-        this.clientName,
-        this.dBStatus,
-        this.objStatus,
-        this.resultCode,
-        this.errorMessage,
-        this.executionMS});
+  AllAPIModel({this.chkRespId, this.id, this.name, this.status, this.alertNote, this.location, this.monitoringInterval, this.requestTimeout, this.basicAuthUsername, this.basicAuthPassword, this.createdatetime, this.sequence, this.clientName, this.dBStatus, this.objStatus, this.resultCode, this.errorMessage, this.executionMS});
 
-  IndividualAPIModel.fromJson(Map<String, dynamic> json) {
-    checkname = json['checkname'];
-    freshpingid = json['freshpingid'];
-    totalUptime = json['TotalUptime'];
-    totalEntries = json['TotalEntries'];
-    overallTimespan = json['OverallTimespan'];
+  AllAPIModel.fromJson(Map<String, dynamic> json) {
+    chkRespId = json['ChkRespId'];
+    id = json['id'];
+    name = json['name'];
+    status = json['status'];
+    alertNote = json['alert_note'];
+    location = json['location'];
     monitoringInterval = json['monitoring_interval'];
-    totalDowntime = json['TotalDowntime'];
-    totalUptimePercent = json['totalUptimePercent'];
-    totalDowntimePercent = json['totalDowntimePercent'];
-    averageOutageDuration = json['averageOutageDuration'];
+    requestTimeout = json['request_timeout'];
+    basicAuthUsername = json['basic_auth_username'];
+    basicAuthPassword = json['basic_auth_password'];
+    createdatetime = json['createdatetime'];
+    sequence = json['sequence'];
     clientName = json['ClientName'];
     dBStatus = json['DBStatus'];
     objStatus = json['ObjStatus'];
@@ -55,22 +43,27 @@ class IndividualAPIModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['checkname'] = this.checkname;
-    data['freshpingid'] = this.freshpingid;
-    data['TotalUptime'] = this.totalUptime;
-    data['TotalEntries'] = this.totalEntries;
-    data['OverallTimespan'] = this.overallTimespan;
+    data['ChkRespId'] = this.chkRespId;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['status'] = this.status;
+    data['alert_note'] = this.alertNote;
+    data['location'] = this.location;
     data['monitoring_interval'] = this.monitoringInterval;
-    data['TotalDowntime'] = this.totalDowntime;
-    data['totalUptimePercent'] = this.totalUptimePercent;
-    data['totalDowntimePercent'] = this.totalDowntimePercent;
-    data['averageOutageDuration'] = this.averageOutageDuration;
+    data['request_timeout'] = this.requestTimeout;
+    data['basic_auth_username'] = this.basicAuthUsername;
+    data['basic_auth_password'] = this.basicAuthPassword;
+    data['createdatetime'] = this.createdatetime;
+    data['sequence'] = this.sequence;
     data['ClientName'] = this.clientName;
     data['DBStatus'] = this.dBStatus;
     data['ObjStatus'] = this.objStatus;
     data['ResultCode'] = this.resultCode;
     data['ErrorMessage'] = this.errorMessage;
     data['ExecutionMS'] = this.executionMS;
+
     return data;
   }
 }
+
+

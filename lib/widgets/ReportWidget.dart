@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:metrics_app/Screens/BreakdownPages/MonthlyBreakdownPage/MonthlyBreakdown.dart';
 import 'package:metrics_app/Screens/BreakdownPages/OutageBreakdownPage/OutageBreakdown.dart';
 import 'package:metrics_app/Screens/FiltersPage/Filter.dart';
-import 'package:metrics_app/Screens/HomePages/LandingScreen.dart';
 import 'package:metrics_app/utils/sample_data.dart';
 
 import '../CustomObjects/OutlineGraphic.dart';
@@ -75,7 +74,7 @@ class _ReportWidgetState extends State<ReportWidget> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Options()));
+                                        builder: (context) => ReportWidgetBreakdown()));
                               },
                               icon: const Icon(Icons.settings_sharp),
                               iconSize: 25,

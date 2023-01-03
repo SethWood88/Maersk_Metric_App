@@ -13,8 +13,10 @@ class IndividualWidget extends StatelessWidget {
   static const double sidePadding = 0;
 
   var index;
+  var apiName;
+  var uptime;
 
-  IndividualWidget({required this.onPressed, required this.index});
+  IndividualWidget({required this.onPressed, required this.index, required this.apiName, required this.uptime});
 
   @override
   Widget build(BuildContext context) {
