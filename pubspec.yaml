@@ -1,8 +1,6 @@
 name: metrics_app
-description: Metrics App for Visible VSCM
+description: Metrics App for Visible SCM
 
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
@@ -44,7 +42,7 @@ dependencies:
   adaptive_breakpoints: ^0.1.4
   dual_screen: ^1.0.3
   get: ^4.6.5
-  flutter_lints: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:
@@ -55,7 +53,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
