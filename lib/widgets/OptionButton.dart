@@ -3,13 +3,12 @@ import 'package:metrics_app/utils/constants.dart';
 import 'package:metrics_app/utils/widget_functions.dart';
 
 class OptionButton extends StatelessWidget {
-  
   final String text;
   final IconData icon;
   final double width;
 
-  const OptionButton({super.key, required this.text, required this.icon, required this.width});
-  
+  const OptionButton(
+      {super.key, required this.text, required this.icon, required this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +19,18 @@ class OptionButton extends StatelessWidget {
         splashColor: COLOR_WHITE.withAlpha(55),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        onPressed: (){},
+        onPressed: () {},
         child: Row(
           children: [
-            Icon(icon, color: COLOR_WHITE,),
+            Icon(
+              icon,
+              color: COLOR_WHITE,
+            ),
             addHorizontalSpace(10),
-            Text(text,style: const TextStyle(color: COLOR_WHITE),)
+            Text(
+              text,
+              style: const TextStyle(color: COLOR_WHITE),
+            )
           ],
         ),
       ),

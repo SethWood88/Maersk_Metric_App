@@ -40,13 +40,15 @@ class _FilterDropDownState extends State<FilterDropDown> {
         child: Column(
           children: [
             Center(
-              child: Text('Individual API Notifications',style: TextStyle(fontSize: 20, color: Colors.white24), textAlign: TextAlign.left),
+              child: Text('Individual API Notifications',
+                  style: TextStyle(fontSize: 20, color: Colors.white24),
+                  textAlign: TextAlign.left),
             ),
             Container(
               width: size.width,
               height: size.height,
               child: ListView.builder(
-                scrollDirection: Axis.vertical,
+                  scrollDirection: Axis.vertical,
                   clipBehavior: Clip.hardEdge,
                   physics: BouncingScrollPhysics(),
                   itemCount: IndividualAPIData.data.length,
@@ -63,8 +65,10 @@ class _FilterDropDownState extends State<FilterDropDown> {
                             ),
                             child: ListTile(
                               title: Text(
-                                IndividualAPIData.data[index].apiName.toString(),
-                                style: TextStyle(color: Colors.white, fontSize: 25),
+                                IndividualAPIData.data[index].apiName
+                                    .toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 25),
                               ),
                             ),
                           ),
@@ -80,7 +84,8 @@ class _FilterDropDownState extends State<FilterDropDown> {
                               // boolean variable value
                               value: isSwitched,
                               // changes the state of the switch
-                              onChanged: (value) => setState(() => isSwitched = value),
+                              onChanged: (value) =>
+                                  setState(() => isSwitched = value),
                             ),
                           )
                         ]),
@@ -98,6 +103,7 @@ class _FilterDropDownState extends State<FilterDropDown> {
 class FilterApis extends StatelessWidget {
   final String apiname;
   final int id;
+
   FilterApis(this.apiname, this.id);
 
   @override

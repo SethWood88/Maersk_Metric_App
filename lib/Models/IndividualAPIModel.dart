@@ -18,7 +18,28 @@ class AllAPIModel {
   String? errorMessage;
   int? executionMS;
 
-  AllAPIModel({this.chkRespId, this.id, this.name, this.status, this.alertNote, this.location, this.monitoringInterval, this.requestTimeout, this.basicAuthUsername, this.basicAuthPassword, this.createdatetime, this.sequence, this.clientName, this.dBStatus, this.objStatus, this.resultCode, this.errorMessage, this.executionMS});
+  AllAPIModel(
+      {this.chkRespId,
+      this.id,
+      this.name,
+      this.status,
+      this.alertNote,
+      this.location,
+      this.monitoringInterval,
+      this.requestTimeout,
+      this.basicAuthUsername,
+      this.basicAuthPassword,
+      this.createdatetime,
+      this.sequence,
+      this.clientName,
+      this.dBStatus,
+      this.objStatus,
+      this.resultCode,
+      this.errorMessage,
+      this.executionMS});
+
+  static List<AllAPIModel>? fromArrayJson(List<dynamic> json) =>
+      json.map((e) => AllAPIModel.fromJson(e)).toList();
 
   AllAPIModel.fromJson(Map<String, dynamic> json) {
     chkRespId = json['ChkRespId'];
@@ -65,5 +86,3 @@ class AllAPIModel {
     return data;
   }
 }
-
-

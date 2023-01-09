@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:adaptive_breakpoints/adaptive_breakpoints.dart';
-import 'package:flutter/material.dart';
 
-
-Widget addVerticalSpace(double height){
-  return SizedBox(
-      height:height
-  );
+Widget addVerticalSpace(double height) {
+  return SizedBox(height: height);
 }
 
-Widget addHorizontalSpace(double width){
-  return SizedBox(
-      width:width
-  );
+Widget addHorizontalSpace(double width) {
+  return SizedBox(width: width);
 }
 
 // /// The maximum width taken up by each item on the home screen.

@@ -1,23 +1,15 @@
-// ignore_for_file: use_key_in_widget_constructors
-
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:metrics_app/Screens/BreakdownPages/IndividualBreakdownPage/IndividualBreakdown.dart';
-import 'package:metrics_app/utils/endpoints.dart';
-import 'package:metrics_app/widgets/DownedAPIs.dart';
-import 'package:metrics_app/widgets/IndividualWidget.dart';
-import 'package:metrics_app/widgets/ReportWidget.dart';
-import 'package:metrics_app/CustomObjects/OutlineGraphic.dart';
-import 'package:metrics_app/utils/constants.dart';
-import 'package:metrics_app/utils/widget_functions.dart';
-import 'package:metrics_app/utils/sample_data.dart';
 import 'package:http/http.dart' as http;
-import '';
+import 'package:metrics_app/CustomObjects/OutlineGraphic.dart';
+import 'package:metrics_app/utils/endpoints.dart';
+import 'package:metrics_app/utils/widget_functions.dart';
+import 'package:metrics_app/widgets/ReportWidget.dart';
+
 import '../../../Models/IndividualAPIModel.dart';
+import '../../../utils/constants.dart';
 
 class B2CPage extends StatefulWidget {
   @override
@@ -27,7 +19,8 @@ class B2CPage extends StatefulWidget {
 class _B2CPageState extends State<B2CPage> {
   String? mtoken = "";
 
-  void initstate() {
+  @override
+  void initState() {
     super.initState();
 
     requestPermission();
@@ -68,15 +61,10 @@ class _B2CPageState extends State<B2CPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: SizedBox(
-          width: size.width,
-          height: size.height,
-          child: AveragedReport(),
-        ),
+        body: AveragedReport(),
       ),
     );
   }
@@ -88,18 +76,16 @@ class AveragedReport extends StatefulWidget {
 }
 
 class _AveragedReportState extends State<AveragedReport> {
-  late Future<AllAPIModel> data;
-
   @override
-  void initstate() {
+  void initState() {
     super.initState();
-    data = fetchData();
+    fetchData();
   }
 
-  Future<AllAPIModel> fetchData() async {
-    final res = await http.get("$baseProdURL/$allAPIData" as Uri);
+  Future<List<AllAPIModel>?> fetchData() async {
+    final res = await http.get(Uri.parse("$baseProdURL/$allAPIData"));
     if (res.statusCode == 200) {
-      return AllAPIModel.fromJson(jsonDecode(res.body));
+      return AllAPIModel.fromArrayJson(jsonDecode(res.body));
     } else {
       throw Exception("Failed to load all API data");
     }
@@ -107,76 +93,55 @@ class _AveragedReportState extends State<AveragedReport> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-    final Size size = MediaQuery.of(context).size;
     return Container(
-        padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(children: [
-          Row(
-            children: [
-              ClipRRect(
-                child: ReportWidget(),
-              )
-            ],
-          ),
+          ReportWidget(),
           addVerticalSpace(10),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(40),
-            child: SizedBox(
-              height: 349,
-              width: 400,
-              child: Stack(children: [
-                Container(
-                  color: Colors.black,
-                  clipBehavior: Clip.none,
-                  child: CustomPaint(
-                    size: Size(400, 1000),
-                    painter: IndividualAPIGraphics(),
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    width: 370,
-                    height: 325,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(40),
+              child: CustomPaint(
+                painter: IndividualAPIGraphics(),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                  decoration: BoxDecoration(
                       color: COLOR_BLACK,
-                    ),
-                    clipBehavior: Clip.hardEdge,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: FutureBuilder(
-                          future: fetchData(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              if (snapshot.data == null) {
-                                throw Future.error('Data is empty');
-                              } else {
-                                return ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  physics: ClampingScrollPhysics(),
-                                  itemBuilder: (context, int index) {
-                                    return ListTile(
-                                        title: Text((snapshot.data as DocumentSnapshot)[index]
-                                                ['name']
-                                            .toString()));
-                                  },
-                                );
-                              }
-                            } else if (snapshot.connectionState ==
-                                ConnectionState.none) {
-                              throw Future.error('Connnection Failed');
-                            } else {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                          }),
-                    ),
-                  ),
-                )
-              ]),
+                      borderRadius: BorderRadius.all(Radius.circular(36))),
+                  child: FutureBuilder<List<AllAPIModel>?>(
+                      future: fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.data == null) {
+                            throw Future.error('Data is empty');
+                          } else {
+                            return ListView.builder(
+                              padding: EdgeInsets.all(12),
+                              itemCount: snapshot.data?.length,
+                              itemBuilder: (context, int index) {
+                                return ListTile(
+                                    title: Text(
+                                  snapshot.data
+                                          ?.elementAt(index)
+                                          .name
+                                          .toString() ??
+                                      '',
+                                  style: TextStyle(color: Colors.white),
+                                ));
+                              },
+                            );
+                          }
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.none) {
+                          throw Future.error('Connection Failed');
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }),
+                ),
+              ),
             ),
-          ),
+          )
         ]));
   }
 }

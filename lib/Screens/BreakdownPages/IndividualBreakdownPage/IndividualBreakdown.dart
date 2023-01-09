@@ -1,18 +1,18 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:metrics_app/Screens/FiltersPage/Filter.dart';
 import 'package:metrics_app/Screens/HomePages/views/Home.dart';
 import 'package:metrics_app/utils/sample_data.dart';
 
-import '../../../CustomObjects/OutlineGraphic.dart';
 import '../../../CustomObjects/Graphs.dart';
+import '../../../CustomObjects/OutlineGraphic.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/widget_functions.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class IndividualBreakdownPage extends StatefulWidget {
   IndividualBreakdownPage({required this.individualIndex});
+
   var individualIndex;
+
   @override
   State<IndividualBreakdownPage> createState() =>
       _ReportWidgetState(iIndex: individualIndex);
@@ -23,6 +23,7 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
   final PageController _controller = PageController();
 
   var iIndex;
+
   _ReportWidgetState({required this.iIndex});
 
   @override
@@ -50,7 +51,7 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
                       children: [
                         Container(
                           child: CustomPaint(
-                            painter: IndividualBreakdownGraphic(),
+                            painter: IndividualAPIGraphics(),
                           ),
                         ),
                         Container(

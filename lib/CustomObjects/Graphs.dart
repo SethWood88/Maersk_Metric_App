@@ -17,15 +17,16 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     DARKBLUEGRAPH,
   ];
   final double barWidth = 5;
+
   @override
   Widget build(BuildContext context) => BarChart(BarChartData(
         minY: 80,
         maxY: 100,
         groupsSpace: 12,
         barTouchData: BarTouchData(enabled: true),
-        gridData:
-            FlGridData(show: false),
+        gridData: FlGridData(show: false),
         titlesData: FlTitlesData(
+            show: false,
             topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             bottomTitles:
@@ -65,6 +66,7 @@ class OutagesChartWidget extends StatefulWidget {
 
 class _OutagesChartWidgetState extends State<OutagesChartWidget> {
   final double barWidth = 5;
+
   @override
   Widget build(BuildContext context) => BarChart(BarChartData(
         minY: 80,
@@ -119,6 +121,7 @@ class _IndividualLineChartWidgetState extends State<IndividualLineChartWidget> {
     DARKBLUEGRAPH,
   ];
   final double barWidth = 5;
+
   @override
   Widget build(BuildContext context) => BarChart(BarChartData(
         minY: 80,

@@ -69,7 +69,8 @@ class DefaultFirebaseOptions {
     projectId: 'metrics-app-ba631',
     databaseURL: 'https://metrics-app-ba631-default-rtdb.firebaseio.com',
     storageBucket: 'metrics-app-ba631.appspot.com',
-    iosClientId: '708980586889-79shgpvhiartg7608ve20n5k1114bqdh.apps.googleusercontent.com',
+    iosClientId:
+        '708980586889-79shgpvhiartg7608ve20n5k1114bqdh.apps.googleusercontent.com',
     iosBundleId: 'com.example.metricsApp',
   );
 
@@ -80,7 +81,8 @@ class DefaultFirebaseOptions {
     projectId: 'metrics-app-ba631',
     databaseURL: 'https://metrics-app-ba631-default-rtdb.firebaseio.com',
     storageBucket: 'metrics-app-ba631.appspot.com',
-    iosClientId: '708980586889-79shgpvhiartg7608ve20n5k1114bqdh.apps.googleusercontent.com',
+    iosClientId:
+        '708980586889-79shgpvhiartg7608ve20n5k1114bqdh.apps.googleusercontent.com',
     iosBundleId: 'com.example.metricsApp',
   );
 }

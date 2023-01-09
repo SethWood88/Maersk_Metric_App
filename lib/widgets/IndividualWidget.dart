@@ -1,7 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:metrics_app/Controllers/SalutemController.dart';
-import 'package:metrics_app/Models/IndividualAPIModel.dart';
 import 'package:metrics_app/utils/sample_data.dart';
 
 import '../utils/constants.dart';
@@ -16,7 +14,11 @@ class IndividualWidget extends StatelessWidget {
   var apiName;
   var uptime;
 
-  IndividualWidget({required this.onPressed, required this.index, required this.apiName, required this.uptime});
+  IndividualWidget(
+      {required this.onPressed,
+      required this.index,
+      required this.apiName,
+      required this.uptime});
 
   @override
   Widget build(BuildContext context) {
