@@ -4,6 +4,7 @@ import 'package:metrics_app/Screens/BreakdownPages/MonthlyBreakdownPage/MonthlyB
 import 'package:metrics_app/Screens/BreakdownPages/OutageBreakdownPage/OutageBreakdown.dart';
 import 'package:metrics_app/Screens/FiltersPage/Filter.dart';
 import 'package:metrics_app/utils/sample_data.dart';
+import 'package:metrics_app/utils/widget_functions.dart';
 
 import '../CustomObjects/Graphs.dart';
 import '../CustomObjects/OutlineGraphic.dart';
