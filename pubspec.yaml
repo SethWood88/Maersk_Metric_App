@@ -65,24 +65,32 @@ flutter:
       fonts:
         - asset: fonts/MaerskText-Regular.ttf
         - asset: fonts/MaerskText-Bold.ttf
+          weight: 700
         - asset: fonts/MaerskText-Light.ttf
+          weight: 300
         - asset: fonts/MaerskText-Italic.ttf
           style: italic
         - asset: fonts/MaerskText-BoldItalic.ttf
+          weight: 700
           style: italic
         - asset: fonts/MaerskText-LightItalic.ttf
           style: italic
+          weight: 300
     - family: MaerskHeadline
       fonts:
         - asset: fonts/MaerskHeadline-Regular.ttf
         - asset: fonts/MaerskHeadline-Bold.ttf
+          weight: 700
         - asset: fonts/MaerskHeadline-Light.ttf
+          weight: 300
         - asset: fonts/MaerskHeadline-Italic.ttf
           style: italic
         - asset: fonts/MaerskHeadline-BoldItalic.ttf
           style: italic
+          weight: 700
         - asset: fonts/MaerskHeadline-LightItalic.ttf
           style: italic
+          weight: 300
 
 
   # The following line ensures that the Material Icons font is
