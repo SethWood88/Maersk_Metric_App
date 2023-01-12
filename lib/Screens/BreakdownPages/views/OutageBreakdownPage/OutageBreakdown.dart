@@ -1,26 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:metrics_app/CustomObjects/OutlineGraphic.dart';
+import 'package:metrics_app/Screens/BreakdownPages/controllers/outages_breakdown_controller.dart';
 
-import '../../../utils/constants.dart';
-import '../../../utils/sample_data.dart';
-import '../../../utils/widget_functions.dart';
-import '../../HomePages/views/Home.dart';
+import '../../../../utils/constants.dart';
+import '../../../../utils/widget_functions.dart';
 
-class OutagesBreakdownPage extends StatefulWidget {
-  OutagesBreakdownPage({required this.individualIndex});
-
-  final int individualIndex;
-
-  @override
-  State<OutagesBreakdownPage> createState() =>
-      _OutagesBreakdownPageState(iIndex: individualIndex);
-}
-
-class _OutagesBreakdownPageState extends State<OutagesBreakdownPage> {
-  var iIndex;
-
-  _OutagesBreakdownPageState({required this.iIndex});
+class OutagesBreakdownPage extends GetView<OutagesBreakdownController> {
+  const OutagesBreakdownPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +24,21 @@ class _OutagesBreakdownPageState extends State<OutagesBreakdownPage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  addHorizontalSpace(20),
                   IconButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => Get.back(),
                     icon: const Icon(Icons.arrow_back_rounded),
                     iconSize: 30,
                   ),
+                  addHorizontalSpace(32),
                   Column(
                     children: [
                       AutoSizeText(
-                        IndividualAPIData.data[iIndex].apiName,
+                        controller.selected()?.apiName ?? '',
                         maxLines: 1,
-                        style: TextStyle(color: COLOR_WHITE, fontSize: 24),
+                        style: const TextStyle(color: COLOR_WHITE, fontSize: 24),
                       ),
-                      Text(
+                      const Text(
                         'OUTAGE REPORT',
                         style: TextStyle(
                           color: COLOR_WHITE,
@@ -60,7 +50,7 @@ class _OutagesBreakdownPageState extends State<OutagesBreakdownPage> {
                 ],
               ),
               Expanded(child: Container(
-                margin: EdgeInsets.fromLTRB(16, 4, 16, 24),
+                margin: const EdgeInsets.fromLTRB(16, 4, 16, 24),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     color: COLOR_BLACK),

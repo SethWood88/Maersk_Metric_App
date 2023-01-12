@@ -3,15 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:metrics_app/utils/constants.dart';
 import 'package:metrics_app/utils/sample_data.dart';
 
-class LineChartWidget extends StatefulWidget {
-  const LineChartWidget({Key? key}) : super(key: key);
+class LineChartWidget extends StatelessWidget {
+  LineChartWidget({super.key});
 
-  @override
-  State<LineChartWidget> createState() => _LineChartWidgetState();
-}
-
-class _LineChartWidgetState extends State<LineChartWidget> {
-  List<Color> gradientColors = [
+  final List<Color> gradientColors = [
     DARKBLUEGRAPH,
     MAERSKBLUE,
     DARKBLUEGRAPH,
@@ -41,11 +36,11 @@ class _LineChartWidgetState extends State<LineChartWidget> {
                     width: barWidth,
                     color: Colors.orange,
                     borderRadius: data.y > 0
-                        ? BorderRadius.only(
+                        ? const BorderRadius.only(
                             topLeft: Radius.circular(6),
                             topRight: Radius.circular(6),
                           )
-                        : BorderRadius.only(
+                        : const BorderRadius.only(
                             bottomLeft: Radius.circular(6),
                             bottomRight: Radius.circular(6),
                           ),
@@ -57,14 +52,9 @@ class _LineChartWidgetState extends State<LineChartWidget> {
       ));
 }
 
-class OutagesChartWidget extends StatefulWidget {
+class OutagesChartWidget extends StatelessWidget {
   const OutagesChartWidget({Key? key}) : super(key: key);
 
-  @override
-  State<OutagesChartWidget> createState() => _OutagesChartWidgetState();
-}
-
-class _OutagesChartWidgetState extends State<OutagesChartWidget> {
   final double barWidth = 5;
 
   @override
@@ -90,11 +80,11 @@ class _OutagesChartWidgetState extends State<OutagesChartWidget> {
                     width: barWidth,
                     color: DANGER,
                     borderRadius: data.y > 0
-                        ? BorderRadius.only(
+                        ? const BorderRadius.only(
                             topLeft: Radius.circular(6),
                             topRight: Radius.circular(6),
                           )
-                        : BorderRadius.only(
+                        : const BorderRadius.only(
                             bottomLeft: Radius.circular(6),
                             bottomRight: Radius.circular(6),
                           ),
@@ -106,16 +96,10 @@ class _OutagesChartWidgetState extends State<OutagesChartWidget> {
       ));
 }
 
-class IndividualLineChartWidget extends StatefulWidget {
-  const IndividualLineChartWidget({Key? key}) : super(key: key);
+class IndividualLineChartWidget extends StatelessWidget {
+  IndividualLineChartWidget({Key? key}) : super(key: key);
 
-  @override
-  State<IndividualLineChartWidget> createState() =>
-      _IndividualLineChartWidgetState();
-}
-
-class _IndividualLineChartWidgetState extends State<IndividualLineChartWidget> {
-  List<Color> gradientColors = [
+  final List<Color> gradientColors = [
     DARKBLUEGRAPH,
     MAERSKBLUE,
     DARKBLUEGRAPH,
@@ -145,11 +129,11 @@ class _IndividualLineChartWidgetState extends State<IndividualLineChartWidget> {
                     width: barWidth,
                     color: SUCCESS,
                     borderRadius: data.y > 0
-                        ? BorderRadius.only(
+                        ? const BorderRadius.only(
                             topLeft: Radius.circular(6),
                             topRight: Radius.circular(6),
                           )
-                        : BorderRadius.only(
+                        : const BorderRadius.only(
                             bottomLeft: Radius.circular(6),
                             bottomRight: Radius.circular(6),
                           ),

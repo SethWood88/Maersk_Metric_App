@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:metrics_app/Screens/HomePages/views/Home.dart';
+import 'package:get/get.dart';
+import 'package:metrics_app/Screens/BreakdownPages/controllers/month_breakdown_controller.dart';
 import 'package:metrics_app/utils/sample_data.dart';
-import 'package:metrics_app/widgets/ReportWidget.dart';
 
-import '../../../CustomObjects/Graphs.dart';
-import '../../../CustomObjects/OutlineGraphic.dart';
-import '../../../utils/constants.dart';
-import '../../../utils/widget_functions.dart';
+import '../../../../CustomObjects/Graphs.dart';
+import '../../../../CustomObjects/OutlineGraphic.dart';
+import '../../../../utils/constants.dart';
+import '../../../../utils/widget_functions.dart';
+import '../../../HomePages/components/DowntimeWidget.dart';
 
-class ReportWidgetBreakdown extends StatefulWidget {
-  @override
-  State<ReportWidgetBreakdown> createState() => _ReportWidgetState();
-}
+class ReportWidgetBreakdown extends GetView<MonthBreakdownController> {
+  ReportWidgetBreakdown({super.key});
 
-class _ReportWidgetState extends State<ReportWidgetBreakdown> {
   final List<bool> _selectedGraphs = <bool>[true, false, false, false, false];
-  bool vertical = false;
+  final bool vertical = false;
   final PageController _controller = PageController();
 
   @override
@@ -35,20 +33,15 @@ class _ReportWidgetState extends State<ReportWidgetBreakdown> {
                       Container(
                           margin: const EdgeInsets.only(left: 24),
                           child: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => B2CPage()));
-                            },
+                            onPressed: () => Get.back(),
                             icon: const Icon(Icons.arrow_back_rounded),
                             iconSize: 30,
                           )),
                       Container(
                         margin: const EdgeInsets.only(left: 24),
                         child: Column(
-                          children: [
-                            const Text(
+                          children: const [
+                            Text(
                               'MONTH\nBREAKDOWN',
                               style:
                                   TextStyle(color: COLOR_WHITE, fontSize: 20),
@@ -99,21 +92,19 @@ class _ReportWidgetState extends State<ReportWidgetBreakdown> {
                                   selectedColor: COLOR_WHITE,
                                   borderRadius: BorderRadius.circular(10),
                                   onPressed: (int newIndex) {
-                                    setState(() {
-                                      for (int index = 0;
-                                          index < _selectedGraphs.length;
-                                          index++) {
-                                        if (index == newIndex) {
-                                          _selectedGraphs[index] = true;
-                                          _controller.animateToPage(index,
-                                              duration: const Duration(
-                                                  microseconds: 500),
-                                              curve: Curves.ease);
-                                        } else {
-                                          _selectedGraphs[index] = false;
-                                        }
+                                    for (int index = 0;
+                                    index < _selectedGraphs.length;
+                                    index++) {
+                                      if (index == newIndex) {
+                                        _selectedGraphs[index] = true;
+                                        _controller.animateToPage(index,
+                                            duration: const Duration(
+                                                microseconds: 500),
+                                            curve: Curves.ease);
+                                      } else {
+                                        _selectedGraphs[index] = false;
                                       }
-                                    });
+                                    }
                                   },
                                   constraints: BoxConstraints(
                                       minHeight: 70,

@@ -2,20 +2,21 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:metrics_app/Models/IndividualAPIModel.dart';
 import 'package:metrics_app/Screens/HomePages/views/Home.dart';
 import 'package:metrics_app/utils/sample_data.dart';
 import 'package:http/http.dart' as http;
-import '../../../CustomObjects/Graphs.dart';
-import '../../../CustomObjects/OutlineGraphic.dart';
-import '../../../utils/constants.dart';
-import '../../../utils/endpoints.dart';
-import '../../../utils/widget_functions.dart';
+import '../../../../CustomObjects/Graphs.dart';
+import '../../../../CustomObjects/OutlineGraphic.dart';
+import '../../../../utils/constants.dart';
+import '../../../../utils/endpoints.dart';
+import '../../../../utils/widget_functions.dart';
 
 class IndividualBreakdownPage extends StatefulWidget {
-  IndividualBreakdownPage({required this.individualIndex});
+  const IndividualBreakdownPage({super.key, required this.individualIndex});
 
-  var individualIndex;
+  final int individualIndex;
 
   @override
   State<IndividualBreakdownPage> createState() =>
@@ -123,13 +124,7 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
                                         margin: const EdgeInsets.fromLTRB(
                                             30, 0, 0, 0),
                                         child: IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        B2CPage()));
-                                          },
+                                          onPressed: () => Get.back(),
                                           icon: const Icon(
                                               Icons.arrow_back_rounded),
                                           iconSize: 30,

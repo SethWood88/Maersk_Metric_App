@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import '../../utils/sample_data.dart';
 import '../../utils/widget_functions.dart';
 
-class FilterDropDown extends StatefulWidget {
-  @override
-  State<FilterDropDown> createState() => _FilterDropDownState();
-}
+class FilterDropDown extends StatelessWidget {
+  FilterDropDown({super.key});
 
-class _FilterDropDownState extends State<FilterDropDown> {
   List<String> items = [
     'API Name',
     'Uptime',
@@ -35,76 +32,53 @@ class _FilterDropDownState extends State<FilterDropDown> {
             ),
           ),
           centerTitle: true),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Center(
-              child: Text('Individual API Notifications',
-                  style: TextStyle(fontSize: 20, color: Colors.white24),
-                  textAlign: TextAlign.left),
-            ),
-            Container(
-              width: size.width,
-              height: size.height,
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  clipBehavior: Clip.hardEdge,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: IndividualAPIData.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        addVerticalSpace(5),
-                        Stack(children: [
-                          Container(
-                            width: size.width,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white10,
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                IndividualAPIData.data[index].apiName
-                                    .toString(),
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 25),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 350, top: 10),
-                            child: CupertinoSwitch(
-                              // overrides the default green color of the track
-                              activeColor: Colors.white,
-                              // color of the round icon, which moves from right to left
-                              thumbColor: Colors.green.shade900,
-                              // when the switch is off
-                              trackColor: Colors.black12,
-                              // boolean variable value
-                              value: isSwitched,
-                              // changes the state of the switch
-                              onChanged: (value) =>
-                                  setState(() => isSwitched = value),
-                            ),
-                          )
-                        ]),
-                      ],
-                    );
-                  }),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          const Center(
+            child: Text('Individual API Notifications',
+                style: TextStyle(fontSize: 20, color: Colors.white24),
+                textAlign: TextAlign.left),
+          ),
+          Expanded(
+            child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                clipBehavior: Clip.hardEdge,
+                physics: const BouncingScrollPhysics(),
+                itemCount: IndividualAPIData.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(
+                      IndividualAPIData.data[index].apiName
+                          .toString(),
+                      style: const TextStyle(
+                          color: Colors.white, fontSize: 25),
+                    ),
+                    trailing: CupertinoSwitch(
+                      // overrides the default green color of the track
+                      activeColor: Colors.white,
+                      // color of the round icon, which moves from right to left
+                      thumbColor: Colors.green.shade900,
+                      // when the switch is off
+                      trackColor: Colors.black12,
+                      // boolean variable value
+                      value: isSwitched,
+                      // changes the state of the switch
+                      onChanged: (value) => isSwitched = value,
+                    ),
+                  );
+                }),
+          ),
+        ],
       ),
     );
   }
 }
 
 class FilterApis extends StatelessWidget {
-  final String apiname;
+  final String apiName;
   final int id;
 
-  FilterApis(this.apiname, this.id);
+  const FilterApis({required this.apiName, required this.id, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -112,10 +86,10 @@ class FilterApis extends StatelessWidget {
       children: [
         Container(
             width: double.infinity,
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             child: Text(
-              apiname,
-              style: TextStyle(fontSize: 20),
+              apiName,
+              style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.center,
             )),
       ],
