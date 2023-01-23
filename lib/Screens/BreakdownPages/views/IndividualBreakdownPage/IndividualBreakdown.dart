@@ -3,20 +3,23 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:metrics_app/Models/IndividualAPIModel.dart';
+import 'package:metrics_app/Models/APIReportModel.dart';
 import 'package:metrics_app/Screens/HomePages/views/Home.dart';
 import 'package:metrics_app/utils/sample_data.dart';
 import 'package:http/http.dart' as http;
 import '../../../../CustomObjects/Graphs.dart';
 import '../../../../CustomObjects/OutlineGraphic.dart';
+import '../../../../Models/APIStatusModel.dart';
+import '../../../../Models/OutageModel.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/endpoints.dart';
 import '../../../../utils/widget_functions.dart';
 
 class IndividualBreakdownPage extends StatefulWidget {
-  const IndividualBreakdownPage({super.key, required this.individualIndex});
+  const IndividualBreakdownPage({required this.individualIndex, required this.freshpingid});
 
   final int individualIndex;
+  final String? freshpingid;
 
   @override
   State<IndividualBreakdownPage> createState() =>
@@ -24,12 +27,14 @@ class IndividualBreakdownPage extends StatefulWidget {
 }
 
 class _ReportWidgetState extends State<IndividualBreakdownPage> {
-  final List<bool> _selectedGraphs = <bool>[true, false];
-  final PageController _controller = PageController();
+  _ReportWidgetState({required this.iIndex});
 
   var iIndex;
+  var FreshPingID;
 
-  _ReportWidgetState({required this.iIndex});
+  final bool vertical = false;
+  final List<bool> _selectedGraphs = <bool>[true, false];
+  final PageController _controller = PageController();
 
   @override
   void initState() {
@@ -37,10 +42,11 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
     fetchData();
   }
 
-  Future<List<AllAPIModel>?> fetchData() async {
-    final res = await http.get(Uri.parse("$baseProdURL/$allAPIData"));
+  Future<List<APIReportModel>?> fetchData() async {
+    final res = await http.get(Uri.parse(
+        "https://wwa-salutemmetrics-ncus-prod.azurewebsites.net/api/v1/GetAllCheckFreshPingMetrics/Page0/2023-1-01"));
     if (res.statusCode == 200) {
-      return AllAPIModel.fromArrayJson(jsonDecode(res.body));
+      return APIReportModel.fromArrayJson(jsonDecode(res.body));
     } else {
       throw Exception("Failed to load all API data");
     }
@@ -54,10 +60,10 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: COLOR_BLACK,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: FutureBuilder<List<AllAPIModel>?>(
+          child: FutureBuilder<List<APIReportModel>?>(
             future: fetchData(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
@@ -68,7 +74,7 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: BorderRadius.circular(35),
                         child: SizedBox(
                           width: size.width,
                           height: size.height - 24,
@@ -78,67 +84,47 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
                               children: [
                                 Container(
                                   child: CustomPaint(
-                                    painter: IndividualAPIGraphics(),
+                                    painter: IndividualBreakdownGraphic(),
                                   ),
                                 ),
                                 Container(
                                   width: size.width,
                                   height: size.height,
                                   margin:
-                                  const EdgeInsets.fromLTRB(10, 60, 10, 20),
+                                      const EdgeInsets.fromLTRB(10, 60, 10, 20),
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(40),
+                                      borderRadius: BorderRadius.circular(30),
                                       color: COLOR_BLACK),
-                                ),
-                                Column(
-                                  children: [
-                                    addHorizontalSpace(315),
-                                    Container(
-                                      width: 120,
-                                      child: Column(
-                                        children: [
-                                          AutoSizeText(
-                                            IndividualAPIData
-                                                .data[iIndex].apiName
-                                                .toString(),
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                                color: COLOR_WHITE,
-                                                fontSize: 24),
-                                          ),
-                                          Text(
-                                            'BREAKDOWN',
-                                            style: TextStyle(
-                                              color: COLOR_WHITE,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
                                 ),
                                 Row(
                                   children: [
+                                    addHorizontalSpace(30),
                                     Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            30, 0, 0, 0),
                                         child: IconButton(
-                                          onPressed: () => Get.back(),
-                                          icon: const Icon(
-                                              Icons.arrow_back_rounded),
-                                          iconSize: 30,
-                                        )),
-                                    addHorizontalSpace(215),
+                                      onPressed: () => Get.back(),
+                                      icon:
+                                          const Icon(Icons.arrow_back_rounded),
+                                      iconSize: 30,
+                                    )),
+                                    addHorizontalSpace(20),
                                     Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                            30, 7, 10, 10),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon:
-                                          const Icon(Icons.settings_sharp),
-                                          iconSize: 25,
-                                        )),
+                                      width: 120,
+                                      height: 60,
+                                      child: Center(
+                                        child: AutoSizeText(
+                                          textAlign: TextAlign.center,
+                                          snapshot.data
+                                                  ?.elementAt(iIndex)
+                                                  .checkname
+                                                  .toString() ??
+                                              '',
+                                          maxLines: 2,
+                                          maxFontSize: 30,
+                                          style: TextStyle(
+                                              color: COLOR_WHITE, fontSize: 24),
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 Padding(
@@ -149,7 +135,7 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
                                     children: [
                                       Container(
                                         margin:
-                                        EdgeInsets.fromLTRB(0, 70, 0, 0),
+                                            EdgeInsets.fromLTRB(0, 70, 0, 0),
                                         child: ToggleButtons(
                                             color: Colors.grey,
                                             fillColor: COLOR_GREY,
@@ -158,26 +144,26 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
                                             splashColor: Colors.white,
                                             selectedColor: COLOR_WHITE,
                                             borderRadius:
-                                            BorderRadius.circular(10),
+                                                BorderRadius.circular(10),
                                             onPressed: (int newIndex) {
                                               setState(() {
                                                 for (int index = 0;
-                                                index <
-                                                    _selectedGraphs.length;
-                                                index++) {
+                                                    index <
+                                                        _selectedGraphs.length;
+                                                    index++) {
                                                   if (index == newIndex) {
                                                     _selectedGraphs[index] =
-                                                    true;
+                                                        true;
                                                     _controller.animateToPage(
                                                         index,
                                                         duration:
-                                                        const Duration(
-                                                            microseconds:
-                                                            500),
+                                                            const Duration(
+                                                                microseconds:
+                                                                    500),
                                                         curve: Curves.ease);
                                                   } else {
                                                     _selectedGraphs[index] =
-                                                    false;
+                                                        false;
                                                   }
                                                 }
                                               });
@@ -209,332 +195,322 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20),
-                                  child: Container(
-                                    child: Column(
-                                      children: [
-                                        addVerticalSpace(310),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: boxWidth,
-                                              height: boxHeight,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                  color: Blue200),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                                children: [
-                                                  addHorizontalSpace(10),
-                                                  Container(
-                                                      width: 70,
-                                                      child: AutoSizeText(
-                                                        maxLines: 2,
-                                                        'UPTIME',
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                  addHorizontalSpace(35),
-                                                  Container(
-                                                      width: 55,
-                                                      child: AutoSizeText(
-                                                        maxLines: 1,
-                                                        IndividualAPIData
-                                                            .data[1].uptime,
-                                                        style: TextStyle(
-                                                            fontSize: 22,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                ],
-                                              ),
+                                  child: Column(
+                                    children: [
+                                      addVerticalSpace(310),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: boxWidth,
+                                            height: boxHeight,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: Blue200),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                addHorizontalSpace(10),
+                                                Container(
+                                                    width: 70,
+                                                    child: AutoSizeText(
+                                                      maxLines: 2,
+                                                      'UPTIME',
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: Colors.white),
+                                                    )),
+                                                addHorizontalSpace(35),
+                                                Container(
+                                                    width: 55,
+                                                    child: AutoSizeText(
+                                                      maxLines: 1,
+                                                      snapshot.data
+                                                              ?.elementAt(
+                                                                  iIndex)
+                                                              .totalUptimePercent
+                                                              .toString() ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          fontSize: 22,
+                                                          color: Colors.white),
+                                                    )),
+                                              ],
                                             ),
-                                            addHorizontalSpace(10),
-                                            Container(
-                                              width: boxWidth,
-                                              height: boxHeight,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                  color: Blue200),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                                children: [
-                                                  addHorizontalSpace(10),
-                                                  Container(
-                                                      width: 85,
-                                                      child: AutoSizeText(
-                                                        maxLines: 2,
-                                                        'DOWNTIME PERCENTAGE',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                  addHorizontalSpace(25),
-                                                  Container(
-                                                      width: 40,
-                                                      child: AutoSizeText(
-                                                        maxLines: 1,
-                                                        '3%',
-                                                        style: TextStyle(
-                                                            fontSize: 22,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                ],
-                                              ),
+                                          ),
+                                          addHorizontalSpace(10),
+                                          Container(
+                                            width: boxWidth,
+                                            height: boxHeight,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: Blue200),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                addHorizontalSpace(10),
+                                                Container(
+                                                    width: 85,
+                                                    child: AutoSizeText(
+                                                      maxLines: 2,
+                                                      'DOWNTIME PERCENTAGE',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    )),
+                                                addHorizontalSpace(25),
+                                                Container(
+                                                    width: 40,
+                                                    child: AutoSizeText(
+                                                      maxLines: 1,
+                                                      snapshot.data
+                                                              ?.elementAt(
+                                                                  iIndex)
+                                                              .totalDowntimePercent
+                                                              .toString() ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          fontSize: 22,
+                                                          color: Colors.white),
+                                                    )),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        addVerticalSpace(10),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: boxWidth,
-                                              height: boxHeight,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                  color: Blue400),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                                children: [
-                                                  addHorizontalSpace(10),
-                                                  Container(
-                                                      width: 85,
-                                                      child: AutoSizeText(
-                                                        maxLines: 2,
-                                                        'LAST OUTAGE DURATION',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                  addHorizontalSpace(10),
-                                                  Container(
-                                                      width: 60,
-                                                      child: AutoSizeText(
-                                                        maxLines: 1,
-                                                        '26 MIN',
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            color: Colors.white,
-                                                            wordSpacing: 1),
-                                                      )),
-                                                ],
-                                              ),
+                                          ),
+                                        ],
+                                      ),
+                                      addVerticalSpace(10),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: boxWidth,
+                                            height: boxHeight,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: Blue400),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                addHorizontalSpace(10),
+                                                Container(
+                                                    width: 80,
+                                                    child: AutoSizeText(
+                                                      maxLines: 2,
+                                                      'API RESPONSE TIME',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    )),
+                                                addHorizontalSpace(20),
+                                                Container(
+                                                    width: 50,
+                                                    child: AutoSizeText(
+                                                      maxLines: 1,
+                                                      '413ms',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.white),
+                                                    )),
+                                              ],
                                             ),
-                                            addHorizontalSpace(10),
-                                            Container(
-                                              width: boxWidth,
-                                              height: boxHeight,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                  color: Blue400),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                                children: [
-                                                  addHorizontalSpace(10),
-                                                  Container(
-                                                      width: 80,
-                                                      child: AutoSizeText(
-                                                        maxLines: 2,
-                                                        'API RESPONSE TIME',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                  addHorizontalSpace(20),
-                                                  Container(
-                                                      width: 50,
-                                                      child: AutoSizeText(
-                                                        maxLines: 1,
-                                                        '413ms',
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                ],
-                                              ),
+                                          ),
+                                          addHorizontalSpace(10),
+                                          Container(
+                                            width: boxWidth,
+                                            height: boxHeight,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: Blue400),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                addHorizontalSpace(10),
+                                                Container(
+                                                    width: 70,
+                                                    child: AutoSizeText(
+                                                      maxLines: 3,
+                                                      'UI RESPONSE TIME',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    )),
+                                                addHorizontalSpace(25),
+                                                Container(
+                                                    width: 60,
+                                                    child: AutoSizeText(
+                                                      maxLines: 1,
+                                                      '0ms',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: Colors.white),
+                                                    )),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        addVerticalSpace(10),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: boxWidth,
-                                              height: boxHeight,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                  color: Blue600),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                                children: [
-                                                  addHorizontalSpace(10),
-                                                  Container(
-                                                      width: 80,
-                                                      child: AutoSizeText(
-                                                        maxLines: 3,
-                                                        'TOTAL NUMBER OF OUTAGES',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                  addHorizontalSpace(40),
-                                                  Container(
-                                                      width: 30,
-                                                      child: AutoSizeText(
-                                                        maxLines: 1,
-                                                        '0',
-                                                        style: TextStyle(
-                                                            fontSize: 25,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                ],
-                                              ),
+                                          ),
+                                        ],
+                                      ),
+                                      addVerticalSpace(10),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: boxWidth,
+                                            height: boxHeight,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: Blue600),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                addHorizontalSpace(10),
+                                                Container(
+                                                    width: 80,
+                                                    child: AutoSizeText(
+                                                      maxLines: 3,
+                                                      'TOTAL NUMBER OF OUTAGES',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    )),
+                                                addHorizontalSpace(40),
+                                                Container(
+                                                    width: 30,
+                                                    child: AutoSizeText(
+                                                      maxLines: 1,
+                                                      '1',
+                                                      style: TextStyle(
+                                                          fontSize: 25,
+                                                          color: Colors.white),
+                                                    )),
+                                              ],
                                             ),
-                                            addHorizontalSpace(10),
-                                            Container(
-                                              width: boxWidth,
-                                              height: boxHeight,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                  color: Blue600),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                                children: [
-                                                  addHorizontalSpace(10),
-                                                  Container(
-                                                      width: 70,
-                                                      child: AutoSizeText(
-                                                        maxLines: 3,
-                                                        'UI RESPONSE TIME',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                  addHorizontalSpace(25),
-                                                  Container(
-                                                      width: 60,
-                                                      child: AutoSizeText(
-                                                        maxLines: 1,
-                                                        '303ms',
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                ],
-                                              ),
+                                          ),
+                                          addHorizontalSpace(10),
+                                          Container(
+                                            width: boxWidth,
+                                            height: boxHeight,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: Blue600),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                addHorizontalSpace(10),
+                                                Container(
+                                                    width: 85,
+                                                    child: AutoSizeText(
+                                                      maxLines: 2,
+                                                      'LAST OUTAGE DURATION',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    )),
+                                                addHorizontalSpace(10),
+                                                Container(
+                                                    width: 60,
+                                                    child: Row(
+                                                      children: [
+                                                        AutoSizeText(
+                                                          maxLines: 1,
+                                                          snapshot.data?.elementAt(iIndex).averageOutageDuration.toString() ?? '',
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Colors.white,
+                                                              wordSpacing: 1),
+                                                        ),
+                                                        AutoSizeText(' MIN', style: TextStyle(color: COLOR_WHITE, fontSize: 14),)
+                                                      ],
+                                                    ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        addVerticalSpace(10),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: boxWidth,
-                                              height: boxHeight,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                  color: Blue700),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                                children: [
-                                                  addHorizontalSpace(10),
-                                                  Container(
-                                                      width: 80,
-                                                      child: AutoSizeText(
-                                                        maxLines: 2,
-                                                        'MEAN TIME TO DETECT',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                  addHorizontalSpace(20),
-                                                  Container(
-                                                      width: 60,
-                                                      child: AutoSizeText(
-                                                        maxLines: 1,
-                                                        '3 MIN',
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                ],
-                                              ),
+                                          ),
+                                        ],
+                                      ),
+                                      addVerticalSpace(10),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: boxWidth,
+                                            height: boxHeight,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: Blue700),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                addHorizontalSpace(10),
+                                                Container(
+                                                    width: 80,
+                                                    child: AutoSizeText(
+                                                      maxLines: 2,
+                                                      'MEAN TIME TO DETECT',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    )),
+                                                addHorizontalSpace(20),
+                                                Container(
+                                                    width: 60,
+                                                    child: AutoSizeText(
+                                                      maxLines: 1,
+                                                      '3 MIN',
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: Colors.white),
+                                                    )),
+                                              ],
                                             ),
-                                            addHorizontalSpace(10),
-                                            Container(
-                                              width: boxWidth,
-                                              height: boxHeight,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                  color: Blue700),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                                children: [
-                                                  addHorizontalSpace(10),
-                                                  Container(
-                                                      width: 50,
-                                                      child: AutoSizeText(
-                                                        maxLines: 2,
-                                                        'ERROR LOGS',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                  addHorizontalSpace(40),
-                                                  Container(
-                                                      width: 60,
-                                                      child: AutoSizeText(
-                                                        maxLines: 1,
-                                                        '1132123231221',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                            Colors.white),
-                                                      )),
-                                                ],
-                                              ),
+                                          ),
+                                          addHorizontalSpace(10),
+                                          Container(
+                                            width: boxWidth,
+                                            height: boxHeight,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: Blue700),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                addHorizontalSpace(10),
+                                                Container(
+                                                    width: 50,
+                                                    child: AutoSizeText(
+                                                      maxLines: 2,
+                                                      'ERROR LOGS',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white),
+                                                    )),
+                                                addHorizontalSpace(40),
+                                                Container(
+                                                    width: 60,
+                                                    child: AutoSizeText(
+                                                      maxLines: 1,
+                                                      '0',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: Colors.white),
+                                                    )),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -556,6 +532,30 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
       ),
     );
   }
+
+  renderProperty(String title, Color color, String value) {
+    return Expanded(
+        child: Container(
+      height: 58,
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)), color: color),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+              flex: 3,
+              child: Text(title,
+                  style: TextStyle(fontSize: 12, color: Colors.white))),
+          addHorizontalSpace(8),
+          Expanded(
+              flex: 2,
+              child: Text(value,
+                  style: TextStyle(fontSize: 18, color: Colors.white))),
+        ],
+      ),
+    ));
+  }
 }
 
 const List<Widget> timeFrameList = <Widget>[
@@ -566,11 +566,163 @@ const List<Widget> timeFrameList = <Widget>[
   Text('Last Month', textAlign: TextAlign.center),
 ];
 
-// Padding(
-// padding: EdgeInsets.fromLTRB(30, 120, 10, 420),
-// child: Container(
-// width: size.width,
-// height: size.height,
-// child: LineChartWidget(),
-// ),
-// );
+class Top4Boxes extends StatefulWidget {
+  const Top4Boxes({Key? key, required TopIndex}) : super(key: key);
+
+  @override
+  State<Top4Boxes> createState() => _Top4BoxesState();
+}
+
+class _Top4BoxesState extends State<Top4Boxes> {
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<List<APIReportModel>?> fetchData() async {
+    final res = await http.get(Uri.parse(
+        "https://wwa-salutemmetrics-ncus-prod.azurewebsites.net/api/v1/GetAllCheckFreshPingMetrics/Page0/2023-1-01"));
+    if (res.statusCode == 200) {
+      return APIReportModel.fromArrayJson(jsonDecode(res.body));
+    } else {
+      throw Exception("Failed to load all API data");
+    }
+  }
+
+  var iIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    double boxWidth = 175;
+    double boxHeight = 70;
+    final Size size = MediaQuery.of(context).size;
+
+    return FutureBuilder<List<APIReportModel>?>(
+        future: fetchData(),
+        builder: (context, snapshot) {
+          return Column(children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                addHorizontalSpace(10),
+                Container(
+                    width: 70,
+                    child: AutoSizeText(
+                      maxLines: 2,
+                      'UPTIME',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    )),
+                addHorizontalSpace(35),
+                Container(
+                    width: 55,
+                    child: AutoSizeText(
+                      maxLines: 1,
+                      snapshot.data
+                              ?.elementAt(iIndex)
+                              .totalUptimePercent
+                              .toString() ??
+                          "",
+                      style: TextStyle(fontSize: 22, color: Colors.white),
+                    )),
+              ],
+            ),
+            addHorizontalSpace(10),
+            Container(
+              width: boxWidth,
+              height: boxHeight,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Blue200),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  addHorizontalSpace(10),
+                  Container(
+                      width: 85,
+                      child: AutoSizeText(
+                        maxLines: 2,
+                        'DOWNTIME PERCENTAGE',
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                      )),
+                  addHorizontalSpace(25),
+                  Container(
+                      width: 40,
+                      child: AutoSizeText(
+                        maxLines: 1,
+                        snapshot.data
+                                ?.elementAt(iIndex)
+                                .totalDowntimePercent
+                                .toString() ??
+                            "",
+                        style: TextStyle(fontSize: 22, color: Colors.white),
+                      )),
+                ],
+              ),
+            ),
+            addVerticalSpace(10),
+            Row(
+              children: [
+                Container(
+                  width: boxWidth,
+                  height: boxHeight,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Blue400),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      addHorizontalSpace(10),
+                      Container(
+                          width: 70,
+                          child: AutoSizeText(
+                            maxLines: 3,
+                            'UI RESPONSE TIME',
+                            style: TextStyle(fontSize: 14, color: Colors.white),
+                          )),
+                      addHorizontalSpace(25),
+                      Container(
+                          width: 60,
+                          child: AutoSizeText(
+                            maxLines: 1,
+                            '303ms',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          )),
+                    ],
+                  ),
+                ),
+                addHorizontalSpace(10),
+                Container(
+                  width: boxWidth,
+                  height: boxHeight,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Blue400),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      addHorizontalSpace(10),
+                      Container(
+                          width: 80,
+                          child: AutoSizeText(
+                            maxLines: 2,
+                            'API RESPONSE TIME',
+                            style: TextStyle(fontSize: 14, color: Colors.white),
+                          )),
+                      addHorizontalSpace(20),
+                      Container(
+                          width: 50,
+                          child: AutoSizeText(
+                            maxLines: 1,
+                            '413ms',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          )),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ]);
+        });
+  }
+}

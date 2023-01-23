@@ -167,14 +167,13 @@ class IndividualBreakdownGraphic extends CustomPainter {
       ..color = SUCCESS
       ..strokeWidth = 15;
 
-    canvas.drawRect(
-        Rect.fromLTRB(0, 0, 90, 590), paint); //LIGHT BLUE LEFT VERTICAL
+    canvas.drawRect(Rect.fromLTRB(0, 0, 90, 590), paint); //LIGHT BLUE LEFT VERTICAL
     canvas.drawRect(Rect.fromLTRB(0, 240, 145, 300), paint); //
     canvas.drawRect(Rect.fromLTRB(225, 0, 255, 100), paint); //LIGHT BLUE SLIVER
 
-    canvas.drawRect(Rect.fromLTRB(size.width, 0, 300, 900), paint1); //LEFT DARK BLUE
+    canvas.drawRect(Rect.fromLTRB(410, 0, 300, 900), paint1); //LEFT DARK BLUE
     canvas.drawRect(Rect.fromLTRB(300, 300, 150, 200), paint1); //TOP DARK BLUE
-    canvas.drawRect(Rect.fromLTRB(0, 690, size.width, 600), paint1); //BOTTOM DARK BLUE
+    canvas.drawRect(Rect.fromLTRB(0, 690, 410, 600), paint1); //BOTTOM DARK BLUE
 
     canvas.drawRect(Rect.fromLTRB(260, 0, 295, 100), paint2);
   }
@@ -222,9 +221,11 @@ class OutageBreakdownGraphic extends CustomPainter {
     canvas.drawRect(Rect.fromLTRB(0, 240, 145, 300), paint); //
     canvas.drawRect(Rect.fromLTRB(225, 0, 255, 100), paint); //LIGHT BLUE SLIVER
 
-    canvas.drawRect(Rect.fromLTRB(size.width, 0, 300, 900), paint1); //LEFT DARK BLUE
+    canvas.drawRect(
+        Rect.fromLTRB(size.width, 0, 300, 900), paint1); //LEFT DARK BLUE
     canvas.drawRect(Rect.fromLTRB(300, 300, 150, 200), paint1); //TOP DARK BLUE
-    canvas.drawRect(Rect.fromLTRB(0, 690, size.width, 600), paint1); //BOTTOM DARK BLUE
+    canvas.drawRect(
+        Rect.fromLTRB(0, 690, size.width, 600), paint1); //BOTTOM DARK BLUE
 
     canvas.drawRect(Rect.fromLTRB(260, 0, 295, 100), paint2);
   }

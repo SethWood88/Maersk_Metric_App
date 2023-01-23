@@ -81,12 +81,12 @@ class OutagesChartWidget extends StatelessWidget {
                     color: DANGER,
                     borderRadius: data.y > 0
                         ? const BorderRadius.only(
-                            topLeft: Radius.circular(6),
-                            topRight: Radius.circular(6),
+                            topLeft: Radius.circular(4),
+                            topRight: Radius.circular(4),
                           )
                         : const BorderRadius.only(
-                            bottomLeft: Radius.circular(6),
-                            bottomRight: Radius.circular(6),
+                            bottomLeft: Radius.circular(4),
+                            bottomRight: Radius.circular(4),
                           ),
                   ),
                 ],

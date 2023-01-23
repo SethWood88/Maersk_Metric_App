@@ -13,11 +13,10 @@ class ReportWidget extends StatefulWidget {
 }
 
 class _ReportWidgetState extends State<ReportWidget> {
-
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(50),
+      borderRadius: BorderRadius.circular(35),
       child: SizedBox(
         height: 300,
         child: CustomPaint(
@@ -27,28 +26,31 @@ class _ReportWidgetState extends State<ReportWidget> {
               Row(
                 children: [
                   Container(
-                      margin: const EdgeInsets.only(left: 24),
+                      margin: const EdgeInsets.only(left: 30, top: 5),
                       child: IconButton(
                         onPressed: () => Get.toNamed('/filters'),
                         icon: const Icon(Icons.filter_alt_rounded),
-                        iconSize: 25,
+                        iconSize: 30,
                       )),
                   Expanded(
                       child: Row(
-                        children: const [
-                          Padding(padding: EdgeInsets.only(left: 24), child: Text(
-                            'MONTHLY\nAVERAGES',
-                            style: TextStyle(color: COLOR_WHITE, fontSize: 20),
-                            textAlign: TextAlign.center,
-                          ),)
-                        ],
-                      )),
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Text(
+                          'MONTHLY\nAVERAGES',
+                          style: TextStyle(color: COLOR_WHITE, fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    ],
+                  )),
                   Container(
                       margin: const EdgeInsets.only(right: 24),
                       child: IconButton(
                         onPressed: () => Get.toNamed('/month_breakdown'),
-                        icon: const Icon(Icons.settings_sharp),
-                        iconSize: 25,
+                        icon: const Icon(Icons.menu_rounded),
+                        iconSize: 35,
                       )),
                 ],
               ),
@@ -57,7 +59,7 @@ class _ReportWidgetState extends State<ReportWidget> {
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(25),
                       color: COLOR_BLACK),
                   child: GraphSwipe(),
                 ),

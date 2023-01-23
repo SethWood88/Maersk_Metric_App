@@ -1,17 +1,17 @@
 import 'package:get/get.dart';
+import 'package:metrics_app/Models/APIStatusModel.dart';
 import 'package:metrics_app/Screens/HomePages/providers/home_provider.dart';
 
-import '../../../Models/IndividualAPIModel.dart';
+import '../../../Models/APIReportModel.dart';
 
 class HomeController extends GetxController {
   final HomeProvider _provider = HomeProvider();
-  List<AllAPIModel> models = [];
+  List<APIStatusModel> models = [];
   bool isWaiting = false;
 
   @override
   void onInit() {
     super.onInit();
-
     loadModels();
   }
 
@@ -19,7 +19,7 @@ class HomeController extends GetxController {
 
   }
 
-  Future<List<AllAPIModel>> loadModels() async {
+  Future<List<APIStatusModel>> loadModels() async {
     models = await _provider.fetchData() ?? [];
     update();
     return models;

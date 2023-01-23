@@ -1,4 +1,4 @@
-class AllAPIModel {
+class APIStatusModel {
   int? chkRespId;
   int? id;
   String? name;
@@ -18,7 +18,7 @@ class AllAPIModel {
   String? errorMessage;
   int? executionMS;
 
-  AllAPIModel(
+  APIStatusModel(
       {this.chkRespId,
       this.id,
       this.name,
@@ -38,10 +38,10 @@ class AllAPIModel {
       this.errorMessage,
       this.executionMS});
 
-  static List<AllAPIModel>? fromArrayJson(List<dynamic> json) =>
-      json.map((e) => AllAPIModel.fromJson(e)).toList();
+  static List<APIStatusModel>? fromArrayJson(List<dynamic> json) =>
+      json.map((e) => APIStatusModel.fromJson(e)).toList();
 
-  AllAPIModel.fromJson(Map<String, dynamic> json) {
+  APIStatusModel.fromJson(Map<String, dynamic> json) {
     chkRespId = json['ChkRespId'];
     id = json['id'];
     name = json['name'];

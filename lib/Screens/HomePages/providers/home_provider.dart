@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:metrics_app/Models/APIStatusModel.dart';
 
-import '../../../Models/IndividualAPIModel.dart';
+import '../../../Models/APIReportModel.dart';
 import '../../../utils/endpoints.dart';
 
 class HomeProvider extends GetConnect {
@@ -12,11 +13,11 @@ class HomeProvider extends GetConnect {
     baseUrl = baseProdURL;
   }
 
-  Future<List<AllAPIModel>?> fetchData() async {
+  Future<List<APIStatusModel>?> fetchData() async {
     try {
-      final res = await get(allAPIData);
+      final res = await get('https://wwa-salutemmetrics-ncus-prod.azurewebsites.net/api/v1/GetAllChecksCurrentStatus/Page0');
       if (res.statusCode == 200) {
-        return AllAPIModel.fromArrayJson(res.body);
+        return APIStatusModel.fromArrayJson(res.body);
       }
     } on Exception catch (e) {
       if (kDebugMode) {
