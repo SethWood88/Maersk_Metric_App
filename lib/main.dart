@@ -5,13 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:metrics_app/Screens/BreakdownPages/bindings/outages_breakdown_binding.dart';
-import 'package:metrics_app/Screens/BreakdownPages/views/MonthlyBreakdownPage/MonthlyBreakdown.dart';
 import 'package:metrics_app/Screens/HomePages/bindings/home_bindings.dart';
 import 'package:metrics_app/Screens/root/bindings/root_bindings.dart';
 import 'package:metrics_app/utils/constants.dart';
-import 'Screens/BreakdownPages/bindings/month_breakdown_binding.dart';
-import 'Screens/BreakdownPages/views/OutageBreakdownPage/OutageBreakdown.dart';
 import 'Screens/FiltersPage/Filter.dart';
 import 'Screens/HomePages/views/Home.dart';
 import 'firebase_options.dart';
@@ -51,8 +47,6 @@ class _MyAppState extends State<MyApp> {
       getPages: [
         GetPage(name: '/', page: () => const HomePage(), title: 'Monthly Averages', binding: HomeBinding()),
         GetPage(name: '/filters', page: () => FilterDropDown(), title: 'Filters'),
-        GetPage(name: '/outage_report/:id', page: () => const OutagesBreakdownPage(), title: 'Outage Report', binding: OutageBreakDownBinding()),
-        GetPage(name: '/month_breakdown', page: () => ReportWidgetBreakdown(), title: 'Month Breakdown', binding: MonthBreakdownBinding()),
       ],
     );
   }

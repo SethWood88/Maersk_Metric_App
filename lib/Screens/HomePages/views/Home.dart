@@ -12,29 +12,8 @@ import 'package:http/http.dart' as http;
 import '../../../Models/APIReportModel.dart';
 import '../../../utils/constants.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-
-  Future<List<APIStatusModel>?> fetchData() async {
-    final res = await http.get(Uri.parse(
-        "https://wwa-salutemmetrics-ncus-prod.azurewebsites.net/api/v1/GetAllChecksCurrentStatus/Page0"));
-    if (res.statusCode == 200) {
-      return APIStatusModel.fromArrayJson(jsonDecode(res.body));
-    } else {
-      throw Exception("Failed to load all API data");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                           color: COLOR_BLACK,
                           borderRadius: BorderRadius.all(Radius.circular(25))),
                       child: FutureBuilder<List<APIStatusModel>?>(
-                          future: fetchData(),
+                          future: controller.loadModels(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.done) {
@@ -94,8 +73,16 @@ class _HomePageState extends State<HomePage> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             IndividualBreakdownPage(
-                                                                individualIndex:
-                                                                    index, freshpingid: snapshot.data?.elementAt(index).name.toString() ?? '',)));
+                                                              individualIndex:
+                                                                  index,
+                                                              freshpingid: snapshot
+                                                                      .data
+                                                                      ?.elementAt(
+                                                                          index)
+                                                                      .name
+                                                                      .toString() ??
+                                                                  '',
+                                                            )));
                                               },
                                               child: ListTile(
                                                 title: Text(

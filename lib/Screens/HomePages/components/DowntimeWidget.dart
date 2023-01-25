@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:metrics_app/CustomObjects/OutlineGraphic.dart';
 import 'package:metrics_app/Models/OutageModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:metrics_app/Screens/BreakdownPages/views/OutageBreakdownPage/OutageBreakdown.dart';
 import '../../../Models/APIReportModel.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sample_data.dart';
@@ -25,7 +27,7 @@ class _DowntimeWidgetState extends State<DowntimeWidget> {
 
   Future<List<OutageModel>?> fetchData() async {
     final res = await http.get(Uri.parse(
-        "https://wwa-salutemmetrics-ncus-prod.azurewebsites.net/api/v1/GetAllCheckFreshPingMetrics/Page0/2023-1-01"));
+        "https://wwa-salutemmetrics-ncus-prod.azurewebsites.net/api/v1/mttd/GetAllInstances/2023-01-01/page0"));
     if (res.statusCode == 200) {
       return OutageModel.fromArrayJson(jsonDecode(res.body));
     } else {
@@ -43,14 +45,25 @@ class _DowntimeWidgetState extends State<DowntimeWidget> {
               throw Future.error('Data is empty');
             } else {
               return ListView.builder(
-                  itemCount: DowntimeData.data.length,
+                  itemCount: snapshot.data?.length,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   itemBuilder: (context, index) {
-                    var item = snapshot.data?.length;
                     return Card(
                         color: DANGER,
                         child: ListTile(
-                          onTap: () => Get.toNamed('/outage_report/${snapshot.data?.elementAt(index).freshpingid}'),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => OutagesBreakdownPage(
+                                          OutageIndex: index,
+                                          freshpingId: snapshot.data
+                                                  ?.elementAt(index)
+                                                  .freshpingid
+                                                  .toString() ??
+                                              '',
+                                        )));
+                          },
                           leading: SizedBox(
                             width: 100,
                             child: AutoSizeText(
@@ -64,8 +77,13 @@ class _DowntimeWidgetState extends State<DowntimeWidget> {
                               maxLines: 3,
                             ),
                           ),
-                          trailing:
-                              AutoSizeText(snapshot.data?.elementAt(index).detectedDateTime.toString() ?? '', maxLines: 1),
+                          trailing: AutoSizeText(
+                              snapshot.data
+                                      ?.elementAt(index)
+                                      .detectedDateTime
+                                      .toString() ??
+                                  '',
+                              maxLines: 1),
                         ));
                   });
             }

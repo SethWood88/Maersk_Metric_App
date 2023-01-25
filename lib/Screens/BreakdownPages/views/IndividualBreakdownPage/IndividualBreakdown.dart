@@ -16,7 +16,8 @@ import '../../../../utils/endpoints.dart';
 import '../../../../utils/widget_functions.dart';
 
 class IndividualBreakdownPage extends StatefulWidget {
-  const IndividualBreakdownPage({required this.individualIndex, required this.freshpingid});
+  IndividualBreakdownPage(
+      {required this.individualIndex, required this.freshpingid});
 
   final int individualIndex;
   final String? freshpingid;
@@ -416,20 +417,30 @@ class _ReportWidgetState extends State<IndividualBreakdownPage> {
                                                     )),
                                                 addHorizontalSpace(10),
                                                 Container(
-                                                    width: 60,
-                                                    child: Row(
-                                                      children: [
-                                                        AutoSizeText(
-                                                          maxLines: 1,
-                                                          snapshot.data?.elementAt(iIndex).averageOutageDuration.toString() ?? '',
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Colors.white,
-                                                              wordSpacing: 1),
-                                                        ),
-                                                        AutoSizeText(' MIN', style: TextStyle(color: COLOR_WHITE, fontSize: 14),)
-                                                      ],
-                                                    ),
+                                                  width: 60,
+                                                  child: Row(
+                                                    children: [
+                                                      AutoSizeText(
+                                                        maxLines: 1,
+                                                        snapshot.data
+                                                                ?.elementAt(
+                                                                    iIndex)
+                                                                .averageOutageDuration
+                                                                .toString() ??
+                                                            '',
+                                                        style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Colors.white,
+                                                            wordSpacing: 1),
+                                                      ),
+                                                      AutoSizeText(
+                                                        ' MIN',
+                                                        style: TextStyle(
+                                                            color: COLOR_WHITE,
+                                                            fontSize: 14),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:metrics_app/Screens/BreakdownPages/controllers/month_breakdown_controller.dart';
 import 'package:metrics_app/utils/sample_data.dart';
 import 'package:http/http.dart' as http;
 import '../../../../CustomObjects/Graphs.dart';
@@ -11,17 +10,16 @@ import '../../../../CustomObjects/OutlineGraphic.dart';
 import '../../../../Models/APIReportModel.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/widget_functions.dart';
-import '../../../HomePages/components/DowntimeWidget.dart';
-import '../IndividualBreakdownPage/IndividualBreakdown.dart';
 
-class ReportWidgetBreakdown extends StatefulWidget {
-  ReportWidgetBreakdown({super.key});
+
+class MonthlyBreakdown extends StatefulWidget {
+  MonthlyBreakdown({super.key});
 
   @override
-  State<ReportWidgetBreakdown> createState() => _ReportWidgetBreakdownState();
+  State<MonthlyBreakdown> createState() => _MonthlyBreakdownState();
 }
 
-class _ReportWidgetBreakdownState extends State<ReportWidgetBreakdown> {
+class _MonthlyBreakdownState extends State<MonthlyBreakdown> {
   final bool vertical = false;
   final List<bool> _selectedGraphs = <bool>[true, false];
   final PageController _controller = PageController();
