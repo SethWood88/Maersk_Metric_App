@@ -275,9 +275,13 @@ class _OutagesBreakdownPageState extends State<OutagesBreakdownPage> {
                                                 color: COLOR_WHITE),
                                           ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
+                                ),
+                                TextButton(
+                                  onPressed: () => throw Exception(),
+                                  child: const Text("Throw Test Exception"),
                                 ),
                               ],
                             ),

@@ -48,7 +48,10 @@ class _ReportWidgetState extends State<ReportWidget> {
                   Container(
                       margin: const EdgeInsets.only(right: 24),
                       child: IconButton(
-                        onPressed: () => Get.toNamed('/month_breakdown'),
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MonthlyBreakdown())),
                         icon: const Icon(Icons.menu_rounded),
                         iconSize: 35,
                       )),

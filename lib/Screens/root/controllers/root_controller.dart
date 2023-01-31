@@ -8,7 +8,6 @@ class RootController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     requestPermission();
     getToken();
   }
